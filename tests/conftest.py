@@ -1,9 +1,15 @@
 import pytest
 from drivers import ChromeDriver, EdgeDriver
+from logger import logger
 
 
-@pytest.fixture(params=['chrome'])
+pytest_logger = logger.Logger('test', level='DEBUG')
+
+
+@pytest.fixture(params=['chrome', 'edge'])
 def driver(request):
+    pytest_logger.info(f'Test "{request.node.name}" started for browser "{request.param}"')
+
     if request.param == 'chrome':
         driver = ChromeDriver()
     elif request.param == 'edge':
@@ -13,3 +19,4 @@ def driver(request):
 
     yield driver
     driver.quit_driver()
+    pytest_logger.info(f'Test "{request.node.name}" completed.')
