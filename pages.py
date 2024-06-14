@@ -21,6 +21,7 @@ class BasePage:
 
 
 class MainPage(BasePage):
+
     url = 'https://demoqa.com/'
 
     def __init__(self, driver: ChromeDriver):
@@ -40,4 +41,21 @@ class MainPage(BasePage):
 
     def get_list_of_cards(self):
         elements = self.driver.find_elements(locator=locators.MainPageLocators.CARD_ITEM)
+        return elements
+
+
+class ElementsPage(BasePage):
+
+    url = 'https://demoqa.com/elements'
+
+    def go_to_elements_page(self):
+        self.driver.go_to(self.url)
+
+    def get_page_footer(self, locator=locators.ElementsPage.FOOTER):
+        return super().get_page_footer(locator)
+
+    def get_elements_list(self):
+        element = self.driver.find_element(locator=locators.ElementsPage.ELEMENTS_LIST)
+        element = self.driver.find_element(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_LIST)
+        elements = self.driver.find_elements(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_ITEM)
         return elements
