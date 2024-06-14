@@ -27,5 +27,15 @@ def test_text_field(driver):
         assert value in text_items
 
 
+def test_field_validation_error(driver):
+    text_page = pages.TextBoxPage(driver)
+    text_page.go_to_text_box_page()
+
+    text_dict = {'email': 'email.com'}
+    text_page.fill_text_fields(text_dict)
+    error = text_page.find_field_error()
+    assert error
+
+
 if __name__ == '__main__':
     pytest.main()

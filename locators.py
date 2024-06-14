@@ -27,3 +27,4 @@ class TextBoxPage(BasePage):
     SUBMIT = (By.ID, 'submit')
     OUTPUT = (By.ID, 'output')
     TEXT_ITEM = (By.TAG_NAME, 'p')
+    FILED_ERROR = (By.CLASS_NAME, 'field-error')

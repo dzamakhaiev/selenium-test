@@ -19,6 +19,9 @@ class BasePage:
     def find_link(self, element, locator):
         return self.driver.find_element(element=element, locator=locator)
 
+    def find_field_error(self, locator):
+        return self.driver.find_element(locator=locator)
+
 
 class MainPage(BasePage):
 
@@ -88,3 +91,6 @@ class TextBoxPage(BasePage):
         output = self.driver.find_element(locator=locators.TextBoxPage.OUTPUT)
         text_items = self.driver.find_elements(element=output, locator=locators.TextBoxPage.TEXT_ITEM)
         return text_items
+
+    def find_field_error(self, locator=locators.TextBoxPage.FILED_ERROR):
+        return super().find_field_error(locator=locator)
