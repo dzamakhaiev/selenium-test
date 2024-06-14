@@ -12,3 +12,4 @@ def driver(request):
         raise NotImplementedError
 
     yield driver
+    driver.quit_driver()

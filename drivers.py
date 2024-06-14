@@ -65,8 +65,11 @@ class BaseDriver:
         field = self.find_element(locator, element)
         field.send_keys(text)
 
-    def __del__(self):
+    def quit_driver(self):
         self.driver.quit()
+
+    def __del__(self):
+        self.quit_driver()
 
 
 class ChromeDriver(BaseDriver):
