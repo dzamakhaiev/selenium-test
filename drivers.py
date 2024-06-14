@@ -38,6 +38,9 @@ class BaseDriver:
     def get_current_url(self):
         return self.driver.current_url
 
+    def get_title(self):
+        return self.driver.title
+
     @no_such_element_exception
     def find_element(self, locator, element=None):
         if not element:

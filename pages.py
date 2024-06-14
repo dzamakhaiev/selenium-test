@@ -10,6 +10,9 @@ class BasePage:
     def get_current_url(self):
         return self.driver.get_current_url()
 
+    def get_page_title(self):
+        return self.driver.get_title()
+
 
 class MainPage(BasePage):
     url = 'https://demoqa.com/'
