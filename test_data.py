@@ -16,3 +16,8 @@ class ElementsPage(BasePage):
     EXP_URL = 'https://demoqa.com/elements'
     EXP_ITEM_LIST = ['Text Box', 'Check Box', 'Radio Button', 'Web Tables', 'Buttons', 'Links', 'Broken Links - Images',
                      'Upload and Download', 'Dynamic Properties']
+
+
+class TextBoxPage(BasePage):
+
+    EXP_URL = 'https://demoqa.com/text-box'

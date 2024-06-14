@@ -17,3 +17,13 @@ class MainPageLocators(BasePage):
 
 class ElementsPage(BasePage):
     ELEMENTS_LIST = (By.CLASS_NAME, 'element-group')
+
+
+class TextBoxPage(BasePage):
+    FULL_NAME = (By.ID, 'userName')
+    EMAIL = (By.ID, 'userEmail')
+    CURRENT_ADDRESS = (By.ID, 'currentAddress')
+    PERMANENT_ADDRESS = (By.ID, 'permanentAddress')
+    SUBMIT = (By.ID, 'submit')
+    OUTPUT = (By.ID, 'output')
+    TEXT_ITEM = (By.TAG_NAME, 'p')

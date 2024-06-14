@@ -59,3 +59,32 @@ class ElementsPage(BasePage):
         element = self.driver.find_element(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_LIST)
         elements = self.driver.find_elements(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_ITEM)
         return elements
+
+
+class TextBoxPage(BasePage):
+
+    url = 'https://demoqa.com/text-box'
+
+    def go_to_text_box_page(self):
+        self.driver.go_to(self.url)
+
+    def get_page_footer(self, locator=locators.TextBoxPage.FOOTER):
+        return super().get_page_footer(locator)
+
+    def fill_text_fields(self, field_dict: dict):
+        name_field = self.driver.find_element(locator=locators.TextBoxPage.FULL_NAME)
+        email_field = self.driver.find_element(locator=locators.TextBoxPage.EMAIL)
+        current_field = self.driver.find_element(locator=locators.TextBoxPage.CURRENT_ADDRESS)
+        permanent_field = self.driver.find_element(locator=locators.TextBoxPage.PERMANENT_ADDRESS)
+
+        name_field.send_keys(field_dict.get('full_name', ''))
+        email_field.send_keys(field_dict.get('email', ''))
+        current_field.send_keys(field_dict.get('current_address', ''))
+        permanent_field.send_keys(field_dict.get('permanent_address', ''))
+
+        self.driver.find_element(locator=locators.TextBoxPage.SUBMIT).click()
+
+    def read_output(self):
+        output = self.driver.find_element(locator=locators.TextBoxPage.OUTPUT)
+        text_items = self.driver.find_elements(element=output, locator=locators.TextBoxPage.TEXT_ITEM)
+        return text_items
