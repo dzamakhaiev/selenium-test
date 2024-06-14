@@ -45,6 +45,13 @@ class BaseDriver:
         else:
             return element.find_element(*locator)
 
+    @no_such_element_exception
+    def find_elements(self, locator, element=None):
+        if not element:
+            return self.driver.find_elements(*locator)
+        else:
+            return element.find_elements(*locator)
+
     def click_on_element(self, locator=None, element=None):
         if not locator and element:
             element.click()
@@ -64,4 +71,12 @@ class ChromeDriver(BaseDriver):
     def __init__(self):
         service = webdriver.ChromeService()
         driver = webdriver.Chrome(service=service)
+        super().__init__(driver)
+
+
+class EdgeDriver(BaseDriver):
+
+    def __init__(self):
+        service = webdriver.EdgeService()
+        driver = webdriver.Edge(service=service)
         super().__init__(driver)
