@@ -6,7 +6,7 @@ from logger import logger
 pytest_logger = logger.Logger('test', level='DEBUG')
 
 
-@pytest.fixture(params=['chrome', 'edge'])
+@pytest.fixture(params=['chrome', 'edge'], scope="function")
 def driver(request):
     pytest_logger.info(f'Test "{request.node.name}" started for browser "{request.param}"')
 
