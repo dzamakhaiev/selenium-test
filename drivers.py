@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from latest_user_agents import get_random_user_agent
 import settings
 from logger import logger
 
@@ -85,6 +86,10 @@ class BaseDriver:
         field = self.find_element(locator, element)
         field.send_keys(text)
 
+    def switch_to_alert(self):
+        alert = self.driver.switch_to.alert
+        return alert
+
     def quit_driver(self):
         self.driver.quit()
         driver_logger.info('Driver closed.')
@@ -97,6 +102,11 @@ class ChromeDriver(BaseDriver):
 
     def __init__(self):
         service = webdriver.ChromeService()
+        options = webdriver.ChromeOptions()
+        options.add_argument(get_random_user_agent())
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option('excludeSwitches', ['enable-automation'])
+        options.add_argument("--disable-infobars")
         driver = webdriver.Chrome(service=service)
         super().__init__(driver)
 

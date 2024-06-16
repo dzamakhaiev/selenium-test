@@ -2,7 +2,6 @@ import locators
 from drivers import ChromeDriver, EdgeDriver
 from logger import logger
 
-
 page_logger = logger.Logger('test', level='DEBUG')
 
 
@@ -42,9 +41,11 @@ class BasePage:
         elements = self.driver.find_elements(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_ITEM)
         return elements
 
+    def get_buttons(self, locator):
+        return self.driver.find_elements(locator=locator)
+
 
 class MainPage(BasePage):
-
     url = 'https://demoqa.com/'
 
     def __init__(self, driver: (ChromeDriver, EdgeDriver)):
@@ -72,7 +73,6 @@ class MainPage(BasePage):
 
 
 class ElementsPage(BasePage):
-
     url = 'https://demoqa.com/elements'
 
     def __init__(self, driver: (ChromeDriver, EdgeDriver)):
@@ -94,7 +94,6 @@ class ElementsPage(BasePage):
 
 
 class TextBoxPage(BasePage):
-
     url = 'https://demoqa.com/text-box'
 
     def __init__(self, driver: (ChromeDriver, EdgeDriver)):
@@ -133,20 +132,29 @@ class TextBoxPage(BasePage):
 
 
 class BookStorePage(BasePage):
-
     url = 'https://demoqa.com/books'
 
 
 class LoginPage(BasePage):
-
     url = 'https://demoqa.com/login'
+
+    def go_lo_login_page(self):
+        self.driver.go_to(self.url)
+
+    def fill_username_and_password(self, username, password):
+        username_filed = self.driver.find_element(locator=locators.LoginPage.USERNAME)
+        password_filed = self.driver.find_element(locator=locators.LoginPage.PASSWORD)
+        username_filed.send_keys(username)
+        password_filed.send_keys(password)
+
+    def get_login_button(self):
+        return self.driver.find_element(locator=locators.LoginPage.LOGIN)
 
     def get_new_user_button(self):
         return self.driver.find_element(locator=locators.LoginPage.NEW_USER)
 
 
 class RegisterPage(BasePage):
-
     url = 'https://demoqa.com/register'
 
     def fill_register_form(self, reg_dict: dict):
@@ -165,3 +173,14 @@ class RegisterPage(BasePage):
 
     def get_register_button(self):
         return self.driver.find_element(locator=locators.RegisterPage.REGISTER_BUTTON)
+
+    def get_alert(self):
+        alert = self.driver.switch_to_alert()
+        return alert
+
+
+class ProfilePage(BasePage):
+    url = 'https://demoqa.com/profile'
+
+    def get_buttons(self, locator=locators.ProfilePage.BUTTON):
+        return super().get_buttons(locator)

@@ -37,6 +37,9 @@ class BookStorePage(BasePage):
 
 class LoginPage(BasePage):
     NEW_USER = (By.ID, 'newUser')
+    LOGIN = (By.ID, 'login')
+    USERNAME = (By.ID, 'userName')
+    PASSWORD = (By.ID, 'password')
 
 
 class RegisterPage(BasePage):
@@ -46,3 +49,7 @@ class RegisterPage(BasePage):
     PASSWORD = (By.ID, 'password')
     CAPTCHA = (By.ID, 'g-recaptcha')
     REGISTER_BUTTON = (By.ID, 'register')
+
+
+class ProfilePage(BasePage):
+    BUTTON = (By.ID, 'submit')
