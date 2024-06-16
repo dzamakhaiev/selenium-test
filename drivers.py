@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 import settings
 from logger import logger
 
@@ -12,7 +12,7 @@ def no_such_element_exception(find):
 
         try:
             return find(self, *args, **kwargs)
-        except NoSuchElementException as e:
+        except( NoSuchElementException, StaleElementReferenceException) as e:
             driver_logger.error(e)
             return None
 

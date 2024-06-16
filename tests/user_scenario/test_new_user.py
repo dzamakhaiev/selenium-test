@@ -3,16 +3,54 @@ import test_data
 import pages
 
 
-def test_new_user(driver):
+def find_menu_item(menu_items, exp_text):
+    for item in menu_items:
+        if exp_text in item.text:
+            return item
+    else:
+        assert False
+
+
+def test_new_user_scenario(driver):
     main_page = pages.MainPage(driver)
     main_page.go_to_main_page()
     assert main_page.get_current_url() == test_data.MainPage.EXP_URL
 
     # Get list of cards and click on Book Store card
     cards = main_page.get_list_of_cards()
-    for card in cards:
-        if test_data.MainPage.BOOK_STORE_CARD in card.text:
-            card.click()
+    card = find_menu_item(cards, test_data.MainPage.BOOK_STORE_CARD)
+    card.click()
+
+    # Find login item in Book Store card
+    book_page = pages.BookStorePage(driver)
+    assert book_page.get_current_url() == test_data.BookStorePage.EXP_URL
+    items = book_page.get_menu_item_list(exp_text=test_data.MainPage.BOOK_STORE_CARD)
+    login_item = find_menu_item(items, test_data.BookStorePage.LOGIN_TEXT)
+    login_item.click()
+
+    # Check new user page and click on New user button
+    login_page = pages.LoginPage(driver)
+    assert login_page.get_current_url() == test_data.LoginPage.EXP_URL
+    button = login_page.get_new_user_button()
+    assert button
+    button.click()
+
+    # Check register page and create new user
+    register_page = pages.RegisterPage(driver)
+    assert register_page.get_current_url() == test_data.RegisterPage.EXP_URL
+    reg_dict = {'first_name': 'test_name', 'last_name': 'test_surname',
+                'username': 'test_user', 'password': 'Test12345!'}
+    register_page.fill_register_form(reg_dict)
+
+    # Find and click on captcha
+    captcha = register_page.get_captcha()
+    assert captcha
+    captcha.click()
+
+    # Find register button and click on it
+    button = register_page.get_register_button()
+    assert button
+    button.click()
 
 
 if __name__ == '__main__':

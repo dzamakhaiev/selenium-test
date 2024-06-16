@@ -30,6 +30,18 @@ class BasePage:
         page_logger.info('Finding error for current element.')
         return self.driver.find_element(locator=locator)
 
+    def get_menu_item_list(self, exp_text):
+        elements = self.driver.find_elements(locator=locators.ElementsPage.ELEMENTS_LIST)
+        for element in elements:
+            if exp_text in element.text:
+                break
+        else:
+            return []
+
+        element = self.driver.find_element(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_LIST)
+        elements = self.driver.find_elements(element=element, locator=locators.ElementsPage.SUB_ELEMENTS_ITEM)
+        return elements
+
 
 class MainPage(BasePage):
 
@@ -118,3 +130,38 @@ class TextBoxPage(BasePage):
     def find_field_error(self, locator=locators.TextBoxPage.FILED_ERROR):
         page_logger.info('Finding element with error class for Text Box on elements page.')
         return super().find_field_error(locator=locator)
+
+
+class BookStorePage(BasePage):
+
+    url = 'https://demoqa.com/books'
+
+
+class LoginPage(BasePage):
+
+    url = 'https://demoqa.com/login'
+
+    def get_new_user_button(self):
+        return self.driver.find_element(locator=locators.LoginPage.NEW_USER)
+
+
+class RegisterPage(BasePage):
+
+    url = 'https://demoqa.com/register'
+
+    def fill_register_form(self, reg_dict: dict):
+        first_name = self.driver.find_element(locator=locators.RegisterPage.FIRST_NAME)
+        last_name = self.driver.find_element(locator=locators.RegisterPage.LAST_NAME)
+        username = self.driver.find_element(locator=locators.RegisterPage.USERNAME)
+        password = self.driver.find_element(locator=locators.RegisterPage.PASSWORD)
+
+        first_name.send_keys(reg_dict.get('first_name'))
+        last_name.send_keys(reg_dict.get('last_name'))
+        username.send_keys(reg_dict.get('username'))
+        password.send_keys(reg_dict.get('password'))
+
+    def get_captcha(self):
+        return self.driver.find_element(locator=locators.RegisterPage.CAPTCHA)
+
+    def get_register_button(self):
+        return self.driver.find_element(locator=locators.RegisterPage.REGISTER_BUTTON)

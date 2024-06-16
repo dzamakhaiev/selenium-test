@@ -22,3 +22,19 @@ class ElementsPage(BasePage):
 class TextBoxPage(BasePage):
 
     EXP_URL = 'https://demoqa.com/text-box'
+
+
+class BookStorePage(BasePage):
+
+    EXP_URL = 'https://demoqa.com/books'
+    LOGIN_TEXT = 'Login'
+
+
+class LoginPage(BasePage):
+
+    EXP_URL = 'https://demoqa.com/login'
+
+
+class RegisterPage(BasePage):
+
+    EXP_URL = 'https://demoqa.com/register'
