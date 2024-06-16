@@ -44,6 +44,10 @@ class BasePage:
     def get_buttons(self, locator):
         return self.driver.find_elements(locator=locator)
 
+    def get_alert(self):
+        alert = self.driver.switch_to_alert()
+        return alert
+
 
 class MainPage(BasePage):
     url = 'https://demoqa.com/'
@@ -174,13 +178,12 @@ class RegisterPage(BasePage):
     def get_register_button(self):
         return self.driver.find_element(locator=locators.RegisterPage.REGISTER_BUTTON)
 
-    def get_alert(self):
-        alert = self.driver.switch_to_alert()
-        return alert
-
 
 class ProfilePage(BasePage):
     url = 'https://demoqa.com/profile'
 
     def get_buttons(self, locator=locators.ProfilePage.BUTTON):
         return super().get_buttons(locator)
+
+    def get_confirm_button(self):
+        return self.driver.find_element(locator=locators.ProfilePage.CONFIRM)

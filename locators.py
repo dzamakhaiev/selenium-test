@@ -53,3 +53,4 @@ class RegisterPage(BasePage):
 
 class ProfilePage(BasePage):
     BUTTON = (By.ID, 'submit')
+    CONFIRM = (By.ID, 'closeSmallModal-ok')

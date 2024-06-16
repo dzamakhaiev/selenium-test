@@ -1,4 +1,5 @@
 import pytest
+from faker import Faker
 import test_data
 import pages
 
@@ -9,6 +10,15 @@ def find_item(items, exp_text):
             return item
     else:
         assert False
+
+
+def create_user():
+    fake = Faker()
+    full_name = fake.name()
+    password = fake.password(length=10, special_chars=True, digits=True, upper_case=True, lower_case=True)
+
+    return {'first_name': full_name.split(' ')[0], 'last_name': full_name.split(' ')[1],
+            'username': fake.user_name(), 'password': password}
 
 
 def test_new_user_scenario(driver):
@@ -38,8 +48,7 @@ def test_new_user_scenario(driver):
     # Check register page and create new user
     register_page = pages.RegisterPage(driver)
     assert register_page.get_current_url() == test_data.RegisterPage.EXP_URL
-    reg_dict = {'first_name': 'test_name', 'last_name': 'test_surname',
-                'username': 'test_user', 'password': 'Test12345!'}
+    reg_dict = create_user()
     register_page.fill_register_form(reg_dict)
 
     # Find and click on captcha
@@ -75,6 +84,16 @@ def test_new_user_scenario(driver):
     button = find_item(buttons, test_data.ProfilePage.DELETE_ACCOUNT)
     assert button
     button.click()
+
+    # Confirm to delete account
+    button = profile_page.get_confirm_button()
+    assert button
+    button.click()
+
+    # Switch on alert and close it
+    alert = profile_page.get_alert()
+    assert alert
+    alert.accept()
 
     # Check redirect on login page
     assert login_page.get_current_url() == test_data.LoginPage.EXP_URL

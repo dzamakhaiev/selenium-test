@@ -1,5 +1,8 @@
+from time import sleep
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
 from latest_user_agents import get_random_user_agent
 import settings
 from logger import logger
@@ -47,6 +50,12 @@ class BaseDriver:
     def go_to(self, url):
         driver_logger.info(f'Driver is loading url: {url}')
         self.driver.get(url)
+        try:
+            WebDriverWait(self.driver, settings.PAGE_LOAD_TIMEOUT).until(
+                lambda d: d.execute_script('return document.readyState') == 'complete')
+        except TimeoutException as e:
+            driver_logger.error(f'Page ahs not been loaded after {settings.PAGE_LOAD_TIMEOUT} seconds.')
+            assert False, e
 
     def get_current_url(self):
         driver_logger.info(f'Driver is returning current url: {self.driver.current_url}')
@@ -59,6 +68,7 @@ class BaseDriver:
     @no_such_element_exception
     def find_element(self, locator, element=None):
         driver_logger.debug(f'Driver is finding element by locator: {locator}')
+        sleep(settings.FIND_SLEEP)
 
         if not element:
             return self.driver.find_element(*locator)
@@ -68,6 +78,7 @@ class BaseDriver:
     @no_such_element_exception
     def find_elements(self, locator, element=None):
         driver_logger.debug(f'Driver is finding elements by locator: {locator}')
+        sleep(settings.FIND_SLEEP)
 
         if not element:
             return self.driver.find_elements(*locator)
@@ -87,6 +98,8 @@ class BaseDriver:
         field.send_keys(text)
 
     def switch_to_alert(self):
+        driver_logger.debug('Switch to alert and return it.')
+        WebDriverWait(self.driver, 5).until(ec.alert_is_present())
         alert = self.driver.switch_to.alert
         return alert
 
