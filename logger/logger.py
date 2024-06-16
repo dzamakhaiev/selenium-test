@@ -19,7 +19,7 @@ class Logger:
             self.loggers[logger_name] = self.logger
 
             formatter = logging.Formatter(settings.FORMAT)
-            log_directory = os.path.abspath("../logs/")
+            log_directory = os.path.abspath("./logs/")
             if not os.path.exists(log_directory):
                 os.makedirs(log_directory)
             log_file_path = os.path.join(log_directory, f"{logger_name}.log")
